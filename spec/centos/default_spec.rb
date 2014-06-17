@@ -11,12 +11,12 @@ describe 'wordpress::default on Centos 6.5' do
   end
 
   before do
-  allow(File).to receive(:exist?).and_call_original
-  allow(File).to receive(:exist?).with("#{Chef::Config[:file_cache_path]}/wp-secrets.php").and_return(true)
-  allow(File).to receive(:read).and_call_original
-  allow(File).to receive(:read).with("#{Chef::Config[:file_cache_path]}/wp-secrets.php").and_return(true)
-  stub_command("which php").and_return(true)
-  stub_command("mysql --user=wordpress --password=password wordpress -e \"SHOW TABLES; \" | grep wp_options").and_return(false)
+    allow(File).to receive(:exist?).and_call_original
+    allow(File).to receive(:exist?).with("#{Chef::Config[:file_cache_path]}/wp-secrets.php").and_return(true)
+    allow(File).to receive(:read).and_call_original
+    allow(File).to receive(:read).with("#{Chef::Config[:file_cache_path]}/wp-secrets.php").and_return(true)
+    stub_command('which php').and_return(true)
+    stub_command("mysql --user=wordpress --password=password wordpress -e \"SHOW TABLES; \" | grep wp_options").and_return(false)
   end
 
   it 'includes depends recipes' do
