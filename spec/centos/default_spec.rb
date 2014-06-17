@@ -11,9 +11,12 @@ describe 'wordpress::default on Centos 6.5' do
   end
 
   before do
-  ::File.stub(:exist?).with("#{Chef::Config[:file_cache_path]}/wp-secrets.php").and_return(true)
-  #::File.stub(:new).with("#{Chef::Config[:file_cache_path]}/wp-secrets.php").and_return(true)
-  #::File.stub(:open).with("#{Chef::Config[:file_cache_path]}/wp-secrets.php").and_return('dadta')
+  allow(File).to receive(:exist?).and_call_original
+  allow(File).to receive(:exist?).with("#{Chef::Config[:file_cache_path]}/wp-secrets.php").and_return(true)
+  allow(File).to receive(:read).and_call_original
+  allow(File).to receive(:read).with("#{Chef::Config[:file_cache_path]}/wp-secrets.php").and_return(true)
+  stub_command("which php").and_return(true)
+  stub_command("mysql --user=wordpress --password=password wordpress -e \"SHOW TABLES; \" | grep wp_options").and_return(false)
   end
 
   it 'includes depends recipes' do
@@ -31,11 +34,11 @@ describe 'wordpress::default on Centos 6.5' do
   end
 
   it 'download wordpress package' do
-    expect(chef_run).to create_remote_file("#{Chef::Config[:file_cache_path]}/wordpress-3.9.1.tar.gz")
+    expect(chef_run).to create_remote_file_if_missing("#{Chef::Config[:file_cache_path]}/wordpress-3.9.1.tar.gz")
   end
 
   it 'extract wordpress' do
-    expect(chef_run).to run_execute('wordpress_extract')
+    expect(chef_run).to run_execute('worpress_extract')
   end
 
   it 'create database wordpress' do
