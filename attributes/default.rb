@@ -1,0 +1,11 @@
+default[:wordpress][:version] = '3.9.1'
+default[:wordpress][:filename] = "wordpress-#{node[:wordpress][:version]}"
+default[:wordpress][:url] = "http://wordpress.org/#{node[:wordpress][:filename]}.tar.gz"
+default[:wordpress][:destination] = '/var/www/html'
+default[:wordpress][:db_user] = 'wordpress'
+default[:wordpress][:db_name] = 'wordpress'
+default[:wordpress][:db_password] = 'password'
+default[:wordpress][:username] = 'wordpress'
+default[:wordpress][:title] = 'Blog Wordpress'
+default[:wordpress][:password] = 'password'
+default[:wordpress][:mail] = 'test@wordpress.com'
