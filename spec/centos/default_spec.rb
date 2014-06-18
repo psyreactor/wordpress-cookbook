@@ -7,6 +7,7 @@ describe 'wordpress::default on Centos 6.5' do
       :version => '6.5'
       ) do |node|
       node.set[:wordpress][:version] = '3.9.1'
+      node.set[:wordpress][:domain] = 'myblog.com'
     end.converge('wordpress::default')
   end
 
@@ -51,6 +52,10 @@ describe 'wordpress::default on Centos 6.5' do
 
   it 'created wp-config.php' do
     expect(chef_run).to create_template('/var/www/html/wordpress/wp-config.php')
+  end
+
+  it 'add to hosts file wordpress domain' do
+    expect(chef_run).to append_hostsfile_entry('127.0.0.1').with_hostname('myblog.com')
   end
 
   it 'install wordpress' do

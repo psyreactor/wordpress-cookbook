@@ -93,6 +93,12 @@ Recipes
     <td>Admins mail</td>
     <td><tt>test@wordpress.com</tt></td>
   </tr>
+  <tr>
+    <td><tt>node[:wordpress][:domain]</tt></td>
+    <td>String</td>
+    <td>domain or ip for wordpress site</td>
+    <td><tt>myblog.com</tt></td>
+  </tr>
 </table>
 ## Usage
 
@@ -106,7 +112,8 @@ Include `wordpress` in your node's `run_list`:
     "username": "user",
     "password": "password,
     "mail': "test@mail.com",
-    "vesion": "3.9.0"
+    "vesion": "3.9.0",
+    "domain": "mysite.com"
     }
   }
 ```
