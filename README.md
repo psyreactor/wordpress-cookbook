@@ -102,15 +102,13 @@ Include `wordpress` in your node's `run_list`:
 
 ```json
 "default_attributes": {
-  "glpi": {
-    "wordpress": {
-      "username": "user",
-      "password": "password,
-      "mail': "test@mail.com",
-      "vesion": "3.9.0"
+  "wordpress": {
+    "username": "user",
+    "password": "password,
+    "mail': "test@mail.com",
+    "vesion": "3.9.0"
     }
   }
-}
 ```
 
 
