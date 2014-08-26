@@ -68,16 +68,28 @@ mysql_database_user node[:wordpress][:db_user] do
   action :grant
 end
 
-wp_secrets = "#{Chef::Config[:file_cache_path]}/wp-secrets.php"
-
-if File.exist?(wp_secrets)
-  salt_data = File.read(wp_secrets)
-else
-  require 'open-uri'
-  salt_data = open('https://api.wordpress.org/secret-key/1.1/salt/').read
-  open(wp_secrets, 'wb') do |file|
-    file << salt_data
+ruby_block 'secrets_wordpress' do
+  block do
+    wp_secrets = "#{node[:wordpress][:destination]}/wordpress/wp-secrets.php"
+    if File.exist?(wp_secrets)
+      node.default[:wordpress][:salt] = File.read(wp_secrets)
+    else
+      require 'open-uri'
+      node.default[:wordpress][:salt] = open('https://api.wordpress.org/secret-key/1.1/salt/').read
+      open(wp_secrets, 'wb') do |file|
+        file << node[:wordpress][:salt]
+      end
+    end
+    variable = {
+      :database        => node[:wordpress][:db_name],
+      :user            => node[:wordpress][:db_user],
+      :password        => node[:wordpress][:db_password],
+      :salt            => node[:wordpress][:salt]
+    }
+    template_resource = resources("template[#{node[:wordpress][:destination]}/wordpress/wp-config.php]")
+    template_resource.variables variable
   end
+  only_if { node[:wordpress][:salt].nil? }
 end
 
 template "#{node[:wordpress][:destination]}/wordpress/wp-config.php" do
@@ -89,7 +101,7 @@ template "#{node[:wordpress][:destination]}/wordpress/wp-config.php" do
     :database        => node[:wordpress][:db_name],
     :user            => node[:wordpress][:db_user],
     :password        => node[:wordpress][:db_password],
-    :salt            => salt_data
+    :salt            => node[:wordpress][:salt]
   )
 end
 

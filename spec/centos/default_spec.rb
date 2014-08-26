@@ -13,9 +13,9 @@ describe 'wordpress::default on Centos 6.5' do
 
   before do
     allow(File).to receive(:exist?).and_call_original
-    allow(File).to receive(:exist?).with("#{Chef::Config[:file_cache_path]}/wp-secrets.php").and_return(true)
+    allow(File).to receive(:exist?).with('/var/www/html/wp-secrets.php').and_return(true)
     allow(File).to receive(:read).and_call_original
-    allow(File).to receive(:read).with("#{Chef::Config[:file_cache_path]}/wp-secrets.php").and_return(true)
+    allow(File).to receive(:read).with('/var/www/html/wp-secrets.php').and_return(true)
     stub_command('which php').and_return(true)
     stub_command("mysql --user=wordpress --password=password wordpress -e \"SHOW TABLES; \" | grep wp_options").and_return(false)
   end
@@ -51,7 +51,11 @@ describe 'wordpress::default on Centos 6.5' do
   end
 
   it 'created wp-config.php' do
-    expect(chef_run).to create_template('/var/www/html/wordpress/wp-config.php')
+    expect(chef_run).to create_template('/var/www/html/wp-config.php')
+  end
+
+  it 'runs a ruby_block salt wordpress' do
+    expect(chef_run).to run_ruby_block('secrets_wordpress')
   end
 
   it 'add to hosts file wordpress domain' do

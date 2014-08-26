@@ -5,6 +5,7 @@ default[:wordpress][:destination] = '/var/www/html'
 default[:wordpress][:db_user] = 'wordpress'
 default[:wordpress][:db_name] = 'wordpress'
 default[:wordpress][:db_password] = 'password'
+default[:wordpress][:salt] = nil
 default[:wordpress][:username] = 'wordpress'
 default[:wordpress][:title] = 'Blog Wordpress'
 default[:wordpress][:password] = 'password'
