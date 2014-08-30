@@ -51,7 +51,7 @@ describe 'wordpress::default on Centos 6.5' do
   end
 
   it 'created wp-config.php' do
-    expect(chef_run).to create_template('/var/www/html/wp-config.php')
+    expect(chef_run).to create_template('/var/www/html/wordpress/wp-config.php')
   end
 
   it 'runs a ruby_block salt wordpress' do
