@@ -18,7 +18,7 @@ describe 'wordpress::default on Centos 6.5' do
     allow(File).to receive(:read).with('/var/www/html/wp-secrets.php').and_return(true)
     stub_command('which php').and_return(true)
     stub_command("mysql --user=wordpress --password=password wordpress -e \"SHOW TABLES; \" | grep wp_options").and_return(false)
-    stub_command("/usr/sbin/httpd -t").and_return(true)
+    stub_command('/usr/sbin/httpd -t').and_return(true)
   end
 
   it 'includes depends recipes' do
