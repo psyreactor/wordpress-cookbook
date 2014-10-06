@@ -110,6 +110,7 @@ hostsfile_entry '127.0.0.1' do
   unique true
   action :append
   comment 'Append for wordpress cookbook'
+  not_if { node[:wordpress][:domain] == 'localhost' }
 end
 
 execute 'wordpress_install' do
